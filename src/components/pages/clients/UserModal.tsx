@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { X } from "lucide-react";
+import CustomModal from "@/components/common/Modal";
 import { Client, UserFormData } from "@/types";
+import React, { useEffect, useState } from "react";
 
 interface UserModalProps {
   isOpen: boolean;
@@ -31,7 +31,7 @@ export default function UserModal({
           completeName: editUser.completeName,
           identity: editUser.identity,
           email: editUser.email,
-          gender:editUser.gender,
+          gender: editUser.gender,
         });
       } else {
         setFormData({
@@ -100,49 +100,36 @@ export default function UserModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
-        <div className="flex items-center justify-between p-6 border-b">
-          <h2 className="text-xl font-semibold text-gray-900">
-            {editUser ? "Editar Usuario" : "Agregar Nuevo Usuario"}
-          </h2>
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 transition-colors"
-          >
-            <X size={24} />
-          </button>
-        </div>
-
-        <form onSubmit={handleSubmit} className="p-6">
-          <div className="grid grid-cols-1 md:grid-cols-1 gap-4 mb-4">
-            <div>
-              <label
-                htmlFor="nombre"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
-                Nombre Completo *
-              </label>
-              <input
-                type="text"
-                id="completeName"
-                name="completeName"
-                value={formData.completeName}
-                onChange={handleChange}
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  errors.completeName ? "border-red-500" : "border-gray-300"
-                }`}
-                placeholder="Juan"
-              />
-              {errors.completeName && (
-                <p className="mt-1 text-sm text-red-600">
-                  {errors.completeName}
-                </p>
-              )}
-            </div>
+    <CustomModal
+      title={editUser ? "Editar Usuario" : "Agregar Nuevo Usuario"}
+      isOpen={isOpen}
+      onClose={onClose}
+    >
+      <form onSubmit={handleSubmit}>
+        <div className="grid grid-cols-2 md:grid-cols-2 gap-4 mb-4">
+          <div>
+            <label
+              htmlFor="nombre"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Nombre Completo *
+            </label>
+            <input
+              type="text"
+              id="completeName"
+              name="completeName"
+              value={formData.completeName}
+              onChange={handleChange}
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                errors.completeName ? "border-red-500" : "border-gray-300"
+              }`}
+              placeholder="Juan"
+            />
+            {errors.completeName && (
+              <p className="mt-1 text-sm text-red-600">{errors.completeName}</p>
+            )}
           </div>
-
-          <div className="mb-4">
+          <div>
             <label
               htmlFor="identity"
               className="block text-sm font-medium text-gray-700 mb-2"
@@ -165,6 +152,8 @@ export default function UserModal({
               <p className="mt-1 text-sm text-red-600">{errors.identity}</p>
             )}
           </div>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-2 gap-4 mb-4">
           <div className="mb-4">
             <label
               htmlFor="gender"
@@ -212,29 +201,30 @@ export default function UserModal({
               <p className="mt-1 text-sm text-red-600">{errors.email}</p>
             )}
           </div>
-          <div className="flex justify-end gap-3">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 transition-colors"
-              disabled={isSubmitting}
-            >
-              Cancelar
-            </button>
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opaprovince-50 disabled:cursor-not-allowed transition-colors"
-            >
-              {isSubmitting
-                ? "Guardando..."
-                : editUser
-                ? "Actualizar Usuario"
-                : "Crear Usuario"}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+        </div>
+
+        <div className="flex justify-end gap-3">
+          <button
+            type="button"
+            onClick={onClose}
+            className="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 transition-colors"
+            disabled={isSubmitting}
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opaprovince-50 disabled:cursor-not-allowed transition-colors"
+          >
+            {isSubmitting
+              ? "Guardando..."
+              : editUser
+              ? "Actualizar Usuario"
+              : "Crear Usuario"}
+          </button>
+        </div>
+      </form>
+    </CustomModal>
   );
 }
